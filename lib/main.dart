@@ -1,42 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:functional_widget_annotation/functional_widget_annotation.dart';
+import 'services/store_db.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      // Application name
-      title: 'Flutter Hello World',
-      // Application theme data, you can set the colors for the application as
-      // you want
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      // A widget which will be started on application startup
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+void main() async {
+  await SharedPreferencesHelper.init();
+  runApp(myApp());
 }
 
-class MyHomePage extends StatelessWidget {
-  final String title;
-  const MyHomePage({super.key, required this.title});  
+@swidget
+contextButton({title, onpress}) {
+  return Builder(
+      builder: (BuildContext context) => MaterialButton(
+            child: Text('$title'),
+            onPressed: () => onpress(context),
+          ));
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+@swidget
+button({title, onpress}) {
+  return MaterialButton(
+    child: Text('$title'),
+    onPressed: () => onpress(),
+  );
+}
+
+@swidget
+Widget myApp() {
+  return MaterialApp(
+    title: 'Flutter Hello World',
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+    home: myHomePage(title: 'Flutter Demo Home Page'),
+  );
+}
+
+@swidget
+Widget myHomePage({String? title}) {
+  return Scaffold(
       appBar: AppBar(
-        // The title text which will be shown on the action bar
-        title: Text(title),
+        title: Text('$title'),
       ),
-      body: Center(
-        child: Text(
-          'Hello, World!',
+      body: Column(children: [
+        Center(
+          child: Text(
+            'Hello, World!',
+          ),
         ),
-      ),
-    );
-  }
+        button(
+            title: 'View Book List',
+            onpress: () => {SharedPreferencesHelper.setString("test", "test")}),
+        // onpress: (BuildContext context) =>
+        //     {SharedPreferencesHelper.setString("test", "test")}),
+      ]));
 }

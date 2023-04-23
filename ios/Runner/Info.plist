@@ -44,6 +44,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<key>NSAppleMusicUsageDescription</key>  
+	<string>Need to access your files to read and write.</string>
 	<false/>
 </dict>
 </plist>
